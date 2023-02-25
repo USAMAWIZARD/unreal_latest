@@ -26,7 +26,7 @@ void Audpsensor::BeginPlay()
     // ...
 
     FString TheIP = "192.168.0.105";
-    FString Name = "whogivesa";
+    FString Name = "udpsensor";
     int ThePort = 9005;
     FIPv4Address Addr; // = FIPv4Addre ss(127,0,0,1);
     FIPv4Address::Parse(TheIP, Addr);
@@ -39,11 +39,10 @@ void Audpsensor::BeginPlay()
     int32 BufferSize = 2 * 1024 * 1024;
 
     ListenSocket = FUdpSocketBuilder(*Name)
-        .AsNonBlocking()
         .AsReusable()
-        .BoundToAddress(FIPv4Address::Any)
-        .BoundToPort(9005)
-        .WithReceiveBufferSize(BufferSize);
+        .AsNonBlocking()
+        .BoundToEndpoint(EndPoint)
+        .Build();
 
     FTimespan ThreadWaitTime = FTimespan::FromMilliseconds(100);
 
@@ -73,16 +72,18 @@ void Audpsensor::RecvData(const FArrayReaderPtr& ArrayReadPrt, const FIPv4Endpoi
     yaw = FCString::Atoi(*str_yaw);
     pitch = FCString::Atoi(*str_pitch);
     roll = FCString::Atoi(*str_roll);
-
-
-    //  UE_LOG(LogTemp, Warning, TEXT("%s"), *trimed);
-
+   
+    
+     UE_LOG(LogTemp, Warning, TEXT("%f"), roll);
+     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("roll value %f"), roll));
 
 }
 void Audpsensor::DestroySocket()
 {
-    UDPReceiver->Stop();
-    ListenSocket->Close();
+  //  ListenSocket->Close();
+
+//    ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->DestroySocket(ListenSocket);
+
     UE_LOG(LogTemp, Warning, TEXT("Socket Destroy"));
 }
 
@@ -93,3 +94,18 @@ void Audpsensor::Tick(float DeltaTime)
 
 }
 
+void Audpsensor::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+    //~~~~~~~~~~~~~~~~
+    delete UDPReceiver;
+    UDPReceiver = nullptr;
+    if (ListenSocket)
+    {
+        ListenSocket->Close();
+        ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->DestroySocket(ListenSocket);
+        UE_LOG(LogTemp, Warning, TEXT("Socket Destroya"));
+
+    }
+
+}

@@ -18,20 +18,22 @@ class GAMEDAMO_API Audpsensor : public AActor
 public:	
 	// Sets default values for this actor's properties
 	Audpsensor();
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "roll")
-		float roll;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		 float roll;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "pitch")
-		float yaw;
+		 float yaw;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "yaw")
-		float pitch;
+		 float pitch;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 	UFUNCTION(BlueprintCallable, Category = "destroyfunction")
 		static void DestroySocket();
-
 	virtual void RecvData(const FArrayReaderPtr& ArrayReadPrt, const FIPv4Endpoint& EndPt);
+
 };
