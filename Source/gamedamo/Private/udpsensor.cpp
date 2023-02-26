@@ -73,9 +73,9 @@ void Audpsensor::RecvData(const FArrayReaderPtr& ArrayReadPrt, const FIPv4Endpoi
     pitch = FCString::Atoi(*str_pitch);
     roll = FCString::Atoi(*str_roll);
 
-   /* FRotator rotate = FRotator(pitch, yaw, roll);
-    GetOwner()->SetActorRotation(rotate);
-    */
+    //FRotator rotate = FRotator(pitch, yaw, roll);
+    //GetOwner()->SetActorRotation(rotate);
+    
      UE_LOG(LogTemp, Warning, TEXT("%f"), roll);
      GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("roll value %f"), roll));
 
