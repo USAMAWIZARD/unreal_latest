@@ -66,8 +66,8 @@
 			]
 		},
 		{
-			"Name": "GoogleVRHMD",
-			"Enabled": true
+			"Name": "UdpMessaging",
+			"Enabled": false
 		}
 	]
 }
