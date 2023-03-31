@@ -54,9 +54,10 @@ void Audpsensor::BeginPlay()
 
 void Audpsensor::RecvData(const FArrayReaderPtr& ArrayReadPrt, const FIPv4Endpoint& EndPt)
 {
+    fire = false;
+
     //FString msg;
     UE_LOG(LogTemp, Warning, TEXT("Data Recived "));
-
     uint8 data[512];
     FMemory::Memzero(data, 512);
     FMemory::Memcpy(data, ArrayReadPrt->GetData(), ArrayReadPrt->Num());
@@ -69,15 +70,25 @@ void Audpsensor::RecvData(const FArrayReaderPtr& ArrayReadPrt, const FIPv4Endpoi
     FString str_pitch = Parsed[2].TrimStartAndEnd();
     FString str_roll = Parsed[3].TrimStartAndEnd();
 
-    yaw = FCString::Atoi(*str_yaw);
-    pitch = FCString::Atoi(*str_pitch);
-    roll = FCString::Atoi(*str_roll);
+
+    if (trimed0 == "f") {
+        fire = true;
+    }
+    else if (trimed0 == "r") {
+        run = 1;
+    }
+    else if (trimed0 == "s") {
+        yaw = FCString::Atoi(*str_yaw);
+        pitch = FCString::Atoi(*str_pitch);
+        roll = FCString::Atoi(*str_roll);
+
+    }
 
     //FRotator rotate = FRotator(pitch, yaw, roll);
     //GetOwner()->SetActorRotation(rotate);
-    
-     UE_LOG(LogTemp, Warning, TEXT("%f"), roll);
-     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("roll value %f"), roll));
+
+     //UE_LOG(LogTemp, Warning, TEXT("%f"), roll);
+     //GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("roll value %f"), roll));
 
 }
 void Audpsensor::DestroySocket()

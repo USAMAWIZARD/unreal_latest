@@ -24,6 +24,10 @@ public:
 		 float yaw;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "yaw")
 		 float pitch;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "fire")
+		bool fire = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "run")
+		int run = 0;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
