@@ -25,7 +25,7 @@ void Audpsensor::BeginPlay()
 
     // ...
 
-    FString TheIP = "192.168.0.105";
+    FString TheIP = "0.0.0.0";
     FString Name = "udpsensor";
     int ThePort = 9005;
     FIPv4Address Addr; // = FIPv4Addre ss(127,0,0,1);
@@ -55,7 +55,7 @@ void Audpsensor::BeginPlay()
 void Audpsensor::RecvData(const FArrayReaderPtr& ArrayReadPrt, const FIPv4Endpoint& EndPt)
 {
     fire = false;
-
+    run=0;
     //FString msg;
     UE_LOG(LogTemp, Warning, TEXT("Data Recived "));
     uint8 data[512];
